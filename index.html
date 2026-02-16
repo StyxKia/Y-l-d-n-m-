@@ -32,7 +32,6 @@ button {
     border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
-    margin: 10px;
     transition: 0.2s;
 }
 
@@ -42,7 +41,7 @@ button:hover {
 
 .buttons {
     position: relative;
-    height: 140px;
+    height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -80,7 +79,12 @@ button:hover {
 @media (max-width: 480px) {
     .buttons {
         flex-direction: column;
-        height: 180px;
+        height: 200px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px 15px;
     }
 }
 </style>
@@ -106,6 +110,7 @@ button:hover {
     <input type="radio" name="q3" value="b"> Birlikte güldüğümüz an<br>
     <input type="radio" name="q3" value="c"> El ele yürüdüğümüz an<br>
 
+    <br><br>
     <button onclick="kontrolEt()">Devam Et ❤️</button>
 </div>
 
@@ -129,9 +134,9 @@ button:hover {
 
 <script>
 function kontrolEt() {
-    var q1 = document.querySelector('input[name="q1"]:checked');
-    var q2 = document.querySelector('input[name="q2"]:checked');
-    var q3 = document.querySelector('input[name="q3"]:checked');
+    const q1 = document.querySelector('input[name="q1"]:checked');
+    const q2 = document.querySelector('input[name="q2"]:checked');
+    const q3 = document.querySelector('input[name="q3"]:checked');
 
     if (!q1 || !q2 || !q3) {
         alert("Tüm soruları cevaplamalısın 💖");
@@ -187,7 +192,7 @@ setInterval(function() {
     heart.classList.add("heart");
     heart.innerHTML = "❤️";
     heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    heart.style.fontSize = (Math.random() * 20 + 15) + "px";
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 6000);
 }, 600);
