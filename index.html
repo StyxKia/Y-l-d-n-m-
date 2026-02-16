@@ -8,7 +8,7 @@
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background: linear-gradient(135deg, #ff758c, #ff7eb3);
     text-align: center;
     color: white;
@@ -17,25 +17,37 @@ body {
 
 .container {
     background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
     padding: 25px;
     margin: 30px auto;
     width: 90%;
-    max-width: 420px;
+    max-width: 450px;
     border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 button {
     padding: 12px 20px;
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     font-size: 16px;
     cursor: pointer;
-    margin: 8px;
+    margin: 10px;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: scale(1.05);
 }
 
 .buttons {
     position: relative;
-    height: 120px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    overflow: hidden;
 }
 
 #yesBtn {
@@ -52,10 +64,23 @@ button {
     display: none;
 }
 
+.heart {
+    position: fixed;
+    bottom: -10px;
+    font-size: 20px;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+}
+
 @media (max-width: 480px) {
-    button {
-        font-size: 14px;
-        padding: 10px 15px;
+    .buttons {
+        flex-direction: column;
+        height: 180px;
     }
 }
 </style>
@@ -69,3 +94,104 @@ button {
     <p>1) İlk buluşmamız nerede olmuştu?</p>
     <input type="radio" name="q1" value="a"> Park<br>
     <input type="radio" name="q1" value="b"> Kafe<br>
+    <input type="radio" name="q1" value="c"> Sahil<br>
+
+    <p>2) Sana en çok ne diyorum?</p>
+    <input type="radio" name="q2" value="a"> Yavrum<br>
+    <input type="radio" name="q2" value="b"> Aşkım<br>
+    <input type="radio" name="q2" value="c"> Balım<br>
+
+    <p>3) En sevdiğim anımız hangisi?</p>
+    <input type="radio" name="q3" value="a"> İlk sarıldığımız an<br>
+    <input type="radio" name="q3" value="b"> Birlikte güldüğümüz an<br>
+    <input type="radio" name="q3" value="c"> El ele yürüdüğümüz an<br>
+
+    <button onclick="kontrolEt()">Devam Et ❤️</button>
+</div>
+
+<div class="container section" id="angrySection">
+    <h2>Bana hâlâ kızgın mısın? 💔</h2>
+
+    <div class="buttons" id="buttonArea">
+        <button id="yesBtn">Evet 😢</button>
+        <button id="noBtn">Hayır ❤️</button>
+    </div>
+</div>
+
+<div class="container section" id="videoSection">
+    <h2>Seni Çok Seviyorum ❤️</h2>
+    <iframe width="100%" height="250"
+        src="https://www.youtube.com/embed/M3qlWS6WwTI"
+        frameborder="0"
+        allowfullscreen>
+    </iframe>
+</div>
+
+<script>
+function kontrolEt() {
+    var q1 = document.querySelector('input[name="q1"]:checked');
+    var q2 = document.querySelector('input[name="q2"]:checked');
+    var q3 = document.querySelector('input[name="q3"]:checked');
+
+    if (!q1 || !q2 || !q3) {
+        alert("Tüm soruları cevaplamalısın 💖");
+        return;
+    }
+
+    if (q1.value === "b" && q2.value === "a" && q3.value === "c") {
+        document.getElementById("quizSection").style.display = "none";
+        document.getElementById("angrySection").style.display = "block";
+    } else {
+        alert("Biraz daha düşün sevgilim 💭");
+    }
+}
+
+const yesBtn = document.getElementById("yesBtn");
+const buttonArea = document.getElementById("buttonArea");
+
+let isEscaping = false;
+
+function moveButton() {
+
+    if (!isEscaping) {
+        const rect = yesBtn.getBoundingClientRect();
+        const parentRect = buttonArea.getBoundingClientRect();
+
+        yesBtn.style.position = "absolute";
+        yesBtn.style.left = (rect.left - parentRect.left) + "px";
+        yesBtn.style.top = (rect.top - parentRect.top) + "px";
+
+        isEscaping = true;
+    }
+
+    const maxX = buttonArea.clientWidth - yesBtn.offsetWidth;
+    const maxY = buttonArea.clientHeight - yesBtn.offsetHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    yesBtn.style.left = randomX + "px";
+    yesBtn.style.top = randomY + "px";
+}
+
+yesBtn.addEventListener("mouseenter", moveButton);
+yesBtn.addEventListener("touchstart", moveButton);
+
+document.getElementById("noBtn").addEventListener("click", function() {
+    document.getElementById("angrySection").style.display = "none";
+    document.getElementById("videoSection").style.display = "block";
+});
+
+setInterval(function() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 15 + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}, 600);
+</script>
+
+</body>
+</html>
