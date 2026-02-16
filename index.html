@@ -152,19 +152,27 @@ function kontrolEt() {
 const yesBtn = document.getElementById("yesBtn");
 const buttonArea = document.getElementById("buttonArea");
 
-function moveButton() {
-    const maxX = buttonArea.clientWidth - yesBtn.offsetWidth;
-    const maxY = buttonArea.clientHeight - yesBtn.offsetHeight;
+function moveButton(e) {
+    e.preventDefault(); // Mobilde tıklamayı engeller
+
+    const areaRect = buttonArea.getBoundingClientRect();
+    const btnRect = yesBtn.getBoundingClientRect();
+
+    const maxX = areaRect.width - btnRect.width;
+    const maxY = areaRect.height - btnRect.height;
 
     const randomX = Math.random() * maxX;
     const randomY = Math.random() * maxY;
 
+    yesBtn.style.position = "absolute";
     yesBtn.style.left = randomX + "px";
     yesBtn.style.top = randomY + "px";
 }
 
-/* 📱 Mobil için touch desteği */
-yesBtn.addEventListener("mouseover", moveButton);
+/* PC */
+yesBtn.addEventListener("mouseenter", moveButton);
+
+/* Mobil */
 yesBtn.addEventListener("touchstart", moveButton);
 
 document.getElementById("noBtn").addEventListener("click", function() {
@@ -183,5 +191,7 @@ setInterval(function() {
 }, 600);
 </script>
 
+
 </body>
 </html>
+
